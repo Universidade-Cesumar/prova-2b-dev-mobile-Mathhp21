@@ -31,10 +31,10 @@ export default function App() {
   };
 
   const cadastrarMaterial = async () => {
-    if (!nome || !quantidade) {
-      alert('Preencha todos os campos');
-      return;
-    }
+    if (nome.trim() === '' || quantidade.trim() === '') {
+  alert('Informe o nome e a quantidade do material');
+  return;
+}
 
     try {
       await axios.post(API, {
