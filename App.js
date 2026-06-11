@@ -13,6 +13,7 @@ const API = 'https://6a2b3936b687a7d5cbc4f9a4.mockapi.io/Materiais';
 
 export default function App() {
 
+  // Estados utilizados para controlar os dados da aplicação
   const [nome, setNome] = useState('');
   const [quantidade, setQuantidade] = useState('');
   const [materiais, setMateriais] = useState([]);
