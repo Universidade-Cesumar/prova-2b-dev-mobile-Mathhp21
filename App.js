@@ -140,11 +140,11 @@ const styles = StyleSheet.create({
   },
 
   item: {
-  padding: 12,
+  padding: 15,
   borderBottomWidth: 1,
   borderBottomColor: '#ddd',
   backgroundColor: '#f5f5f5',
-  marginBottom: 5,
+  marginBottom: 10,
   borderRadius: 5
 },
 
