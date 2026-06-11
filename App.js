@@ -60,7 +60,7 @@ export default function App() {
       <TextInput
         testID="input-nome"
         style={styles.input}
-        placeholder="Nome do Material"
+        placeholder="Digite o nome do material"
         value={nome}
         onChangeText={setNome}
       />
@@ -68,7 +68,7 @@ export default function App() {
       <TextInput
         testID="input-quantidade"
         style={styles.input}
-        placeholder="Quantidade"
+        placeholder="Digite a quantidade"
         value={quantidade}
         onChangeText={setQuantidade}
         keyboardType="numeric"
