@@ -140,10 +140,13 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    padding: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#ddd'
-  },
+  padding: 12,
+  borderBottomWidth: 1,
+  borderBottomColor: '#ddd',
+  backgroundColor: '#f5f5f5',
+  marginBottom: 5,
+  borderRadius: 5
+},
 
   subtitulo: {
   fontSize: 18,
