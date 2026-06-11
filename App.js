@@ -84,6 +84,10 @@ export default function App() {
 
 <Text>Total de materiais: {materiais.length}</Text>
 
+{materiais.length === 0 && (
+  <Text>Nenhum material cadastrado.</Text>
+)}
+
       <FlatList
         testID="lista-materiais"
         data={materiais}
