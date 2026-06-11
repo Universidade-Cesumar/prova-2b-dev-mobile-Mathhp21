@@ -31,6 +31,7 @@ export default function App() {
     }
   };
 
+  // Função responsável por cadastrar materiais na API
   const cadastrarMaterial = async () => {
     if (nome.trim() === '' || quantidade.trim() === '') {
   alert('Informe o nome e a quantidade do material');
