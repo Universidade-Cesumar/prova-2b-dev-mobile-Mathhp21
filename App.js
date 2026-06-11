@@ -119,12 +119,12 @@ const styles = StyleSheet.create({
   },
 
   input: {
-    borderWidth: 1,
-    borderColor: '#ccc',
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5
-  },
+  borderWidth: 1,
+  borderColor: '#999',
+  padding: 12,
+  marginBottom: 12,
+  borderRadius: 8
+},
 
   botao: {
   backgroundColor: '#28a745',
