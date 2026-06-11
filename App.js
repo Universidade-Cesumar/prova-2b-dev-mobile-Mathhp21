@@ -127,11 +127,11 @@ const styles = StyleSheet.create({
   },
 
   botao: {
-    backgroundColor: '#007bff',
-    padding: 12,
-    borderRadius: 5,
-    marginBottom: 20
-  },
+  backgroundColor: '#28a745',
+  padding: 12,
+  borderRadius: 8,
+  marginBottom: 20
+},
 
   textoBotao: {
     color: '#fff',
