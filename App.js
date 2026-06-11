@@ -112,11 +112,12 @@ const styles = StyleSheet.create({
   },
 
   title: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center'
-  },
+  fontSize: 24,
+  fontWeight: 'bold',
+  marginBottom: 20,
+  textAlign: 'center',
+  color: '#007bff'
+},
 
   input: {
   borderWidth: 1,
