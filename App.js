@@ -44,3 +44,4 @@ const styles = StyleSheet.create({
     marginBottom: 30, // Margem inferior para afastar o texto dos futuros inputs dos alunos
   }
 });
+console.log("Teste");
