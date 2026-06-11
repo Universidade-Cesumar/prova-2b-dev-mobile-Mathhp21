@@ -82,6 +82,8 @@ export default function App() {
 
 <Text style={styles.subtitulo}>Estoque Atual</Text>
 
+<Text>Total de materiais: {materiais.length}</Text>
+
       <FlatList
         testID="lista-materiais"
         data={materiais}
@@ -138,7 +140,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#ddd'
   },
-  
+
   subtitulo: {
   fontSize: 18,
   fontWeight: 'bold',
