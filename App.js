@@ -80,6 +80,8 @@ export default function App() {
         <Text style={styles.textoBotao}>Cadastrar</Text>
       </TouchableOpacity>
 
+<Text style={styles.subtitulo}>Estoque Atual</Text>
+
       <FlatList
         testID="lista-materiais"
         data={materiais}
@@ -135,5 +137,11 @@ const styles = StyleSheet.create({
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd'
-  }
+  },
+  
+  subtitulo: {
+  fontSize: 18,
+  fontWeight: 'bold',
+  marginBottom: 10
+},
 });
