@@ -38,9 +38,9 @@ export default function App() {
 
     try {
       await axios.post(API, {
-        Nome: nome,
-        Quantidade: quantidade
-      });
+  Nome: nome.trim(),
+  Quantidade: quantidade.trim()
+});
 
       setNome('');
       setQuantidade('');
