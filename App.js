@@ -137,10 +137,11 @@ const styles = StyleSheet.create({
 },
 
   textoBotao: {
-    color: '#fff',
-    textAlign: 'center',
-    fontWeight: 'bold'
-  },
+  color: '#fff',
+  textAlign: 'center',
+  fontWeight: 'bold',
+  fontSize: 16
+},
 
   item: {
   padding: 15,
