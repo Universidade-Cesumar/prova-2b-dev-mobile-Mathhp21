@@ -147,7 +147,7 @@ const carregarMateriais = async () => {
         renderItem={({ item }) => (
           <View style={styles.item}>
             <Text style={styles.nomeMaterial}>
-              {item.Nome} - Estoque: {item.Quantidade}
+              {item.Nome} - Estoque: {item.Quantidade} unidades
             </Text>
 
             <TextInput
