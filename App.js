@@ -79,7 +79,7 @@ export default function App() {
       const estoqueAtual = Number(item.Quantidade);
 
       if (!validarRetirada(estoqueAtual, quantidadeRetirada)) {
-        alert('Quantidade inválida ou estoque insuficiente');
+        alert('Não é possível retirar mais itens do que existem em estoque.');
         return;
       }
 
