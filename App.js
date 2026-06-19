@@ -153,7 +153,7 @@ const carregarMateriais = async () => {
             <TextInput
               testID="input-retirada"
               style={styles.input}
-              placeholder="Qtd para retirar"
+              placeholder="Informe a quantidade para retirada"
               keyboardType="numeric"
               value={retirada[item.id] || ''}
               onChangeText={(texto) =>
