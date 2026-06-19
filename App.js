@@ -11,12 +11,21 @@ import axios from 'axios';
 
 const API = 'https://6a2b3936b687a7d5cbc4f9a4.mockapi.io/Materiais';
 
-export default function App() {
+export function validarRetirada(estoqueAtual, quantidadeRetirada) {
+  const estoque = Number(estoqueAtual);
+  const retirada = Number(quantidadeRetirada);
 
-  // Estados utilizados para controlar os dados da aplicação
+  if (retirada <= 0) return false;
+  if (retirada > estoque) return false;
+
+  return true;
+}
+
+export default function App() {
   const [nome, setNome] = useState('');
   const [quantidade, setQuantidade] = useState('');
   const [materiais, setMateriais] = useState([]);
+  const [retirada, setRetirada] = useState({});
 
   useEffect(() => {
     carregarMateriais();
@@ -31,21 +40,60 @@ export default function App() {
     }
   };
 
-  // Função responsável por cadastrar materiais na API
   const cadastrarMaterial = async () => {
     if (nome.trim() === '' || quantidade.trim() === '') {
-  alert('Informe o nome e a quantidade do material');
-  return;
-}
+      alert('Informe o nome e a quantidade do material');
+      return;
+    }
 
     try {
       await axios.post(API, {
-  Nome: nome.trim(),
-  Quantidade: quantidade.trim()
-});
+        Nome: nome.trim(),
+        Quantidade: quantidade.trim()
+      });
 
       setNome('');
       setQuantidade('');
+
+      carregarMateriais();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const excluirMaterial = async (id) => {
+    try {
+      await axios.delete(`${API}/${id}`);
+
+      setMateriais((listaAtual) =>
+        listaAtual.filter((item) => item.id !== id)
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const baixarEstoque = async (item) => {
+    try {
+      const quantidadeRetirada = Number(retirada[item.id] || 0);
+      const estoqueAtual = Number(item.Quantidade);
+
+      if (!validarRetirada(estoqueAtual, quantidadeRetirada)) {
+        alert('Quantidade inválida ou estoque insuficiente');
+        return;
+      }
+
+      const novoEstoque = estoqueAtual - quantidadeRetirada;
+
+      await axios.put(`${API}/${item.id}`, {
+        Nome: item.Nome,
+        Quantidade: novoEstoque.toString()
+      });
+
+      setRetirada({
+        ...retirada,
+        [item.id]: ''
+      });
 
       carregarMateriais();
     } catch (error) {
@@ -82,13 +130,13 @@ export default function App() {
         <Text style={styles.textoBotao}>Cadastrar</Text>
       </TouchableOpacity>
 
-<Text style={styles.subtitulo}>Estoque Atual</Text>
+      <Text style={styles.subtitulo}>Estoque Atual</Text>
 
-<Text>Total de materiais: {materiais.length}</Text>
+      <Text>Total de materiais: {materiais.length}</Text>
 
-{materiais.length === 0 && (
-  <Text>Nenhum material cadastrado.</Text>
-)}
+      {materiais.length === 0 && (
+        <Text>Nenhum material cadastrado.</Text>
+      )}
 
       <FlatList
         testID="lista-materiais"
@@ -96,9 +144,43 @@ export default function App() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Text>
-              {item.Nome} - {item.Quantidade}
+            <Text style={styles.nomeMaterial}>
+              {item.Nome} - Estoque: {item.Quantidade}
             </Text>
+
+            <TextInput
+              testID="input-retirada"
+              style={styles.input}
+              placeholder="Qtd para retirar"
+              keyboardType="numeric"
+              value={retirada[item.id] || ''}
+              onChangeText={(texto) =>
+                setRetirada({
+                  ...retirada,
+                  [item.id]: texto
+                })
+              }
+            />
+
+            <TouchableOpacity
+              testID="btn-baixar"
+              style={[styles.botao, styles.botaoBaixar]}
+              onPress={() => baixarEstoque(item)}
+            >
+              <Text style={styles.textoBotao}>
+                Baixar Estoque
+              </Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              testID="btn-excluir"
+              style={[styles.botao, styles.botaoExcluir]}
+              onPress={() => excluirMaterial(item.id)}
+            >
+              <Text style={styles.textoBotao}>
+                Excluir
+              </Text>
+            </TouchableOpacity>
           </View>
         )}
       />
@@ -114,47 +196,61 @@ const styles = StyleSheet.create({
   },
 
   title: {
-  fontSize: 24,
-  fontWeight: 'bold',
-  marginBottom: 20,
-  textAlign: 'center',
-  color: '#007bff'
-},
-
-  input: {
-  borderWidth: 1,
-  borderColor: '#999',
-  padding: 12,
-  marginBottom: 12,
-  borderRadius: 8
-},
-
-  botao: {
-  backgroundColor: '#28a745',
-  padding: 12,
-  borderRadius: 8,
-  marginBottom: 20
-},
-
-  textoBotao: {
-  color: '#fff',
-  textAlign: 'center',
-  fontWeight: 'bold',
-  fontSize: 16
-},
-
-  item: {
-  padding: 15,
-  borderBottomWidth: 1,
-  borderBottomColor: '#ddd',
-  backgroundColor: '#f5f5f5',
-  marginBottom: 10,
-  borderRadius: 5
-},
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+    color: '#007bff'
+  },
 
   subtitulo: {
-  fontSize: 18,
-  fontWeight: 'bold',
-  marginBottom: 10
-},
+    fontSize: 18,
+    fontWeight: 'bold',
+    marginBottom: 10
+  },
+
+  input: {
+    borderWidth: 1,
+    borderColor: '#999',
+    padding: 12,
+    marginBottom: 12,
+    borderRadius: 8
+  },
+
+  botao: {
+    backgroundColor: '#28a745',
+    padding: 12,
+    borderRadius: 8,
+    marginBottom: 10
+  },
+
+  botaoBaixar: {
+    backgroundColor: '#ff9800'
+  },
+
+  botaoExcluir: {
+    backgroundColor: '#dc3545'
+  },
+
+  textoBotao: {
+    color: '#fff',
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 16
+  },
+
+  item: {
+    padding: 15,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#f5f5f5',
+    marginBottom: 15,
+    borderRadius: 8
+  },
+
+  nomeMaterial: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10
+  }
 });
