@@ -31,7 +31,9 @@ export default function App() {
     carregarMateriais();
   }, []);
 
-  const carregarMateriais = async () => {
+  
+  // Carrega todos os materiais cadastrados na API
+const carregarMateriais = async () => {
     try {
       const response = await axios.get(API);
       setMateriais(response.data);
