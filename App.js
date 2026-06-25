@@ -138,7 +138,7 @@ const carregarMateriais = async () => {
       </TouchableOpacity>
 
       <Text style={styles.subtitulo}>Estoque Atual</Text>
-      
+
       <TextInput
   testID="input-busca"
   style={styles.input}
@@ -147,7 +147,9 @@ const carregarMateriais = async () => {
   onChangeText={setBusca}
 />
 
-      <Text>Total de materiais: {materiais.length}</Text>
+      <Text testID="total-itens">
+  Total de materiais: {materiaisFiltrados.length}
+</Text>
 
       {materiais.length === 0 && (
         <Text>Nenhum material cadastrado.</Text>
@@ -155,7 +157,7 @@ const carregarMateriais = async () => {
 
       <FlatList
         testID="lista-materiais"
-        data={materiais}
+        data={materiaisFiltrados}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.item}>
