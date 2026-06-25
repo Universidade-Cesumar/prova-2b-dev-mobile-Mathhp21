@@ -32,15 +32,13 @@ export default function App() {
     carregarMateriais();
   }, []);
 
-  
-  // Carrega todos os materiais cadastrados na API
-const carregarMateriais = async () => {
+  const carregarMateriais = async () => {
     try {
       const response = await axios.get(API);
       setMateriais(response.data);
     } catch (error) {
-  alert('Erro de conexão. Não foi possível carregar os materiais.');
-}
+      alert('Erro de conexão. Não foi possível carregar os materiais.');
+    }
   };
 
   const cadastrarMaterial = async () => {
@@ -60,8 +58,8 @@ const carregarMateriais = async () => {
 
       carregarMateriais();
     } catch (error) {
-  alert('Erro ao cadastrar material.');
-}
+      alert('Erro ao cadastrar material.');
+    }
   };
 
   const excluirMaterial = async (id) => {
@@ -72,8 +70,8 @@ const carregarMateriais = async () => {
         listaAtual.filter((item) => item.id !== id)
       );
     } catch (error) {
-  alert('Erro ao excluir material.');
-}
+      alert('Erro ao excluir material.');
+    }
   };
 
   const baixarEstoque = async (item) => {
@@ -83,10 +81,6 @@ const carregarMateriais = async () => {
 
       if (!validarRetirada(estoqueAtual, quantidadeRetirada)) {
         alert('Não é possível retirar mais itens do que existem em estoque.');
-
-        const materiaisFiltrados = materiais.filter((item) =>
-  item.Nome.toLowerCase().includes(busca.toLowerCase())
-);
         return;
       }
 
@@ -104,9 +98,13 @@ const carregarMateriais = async () => {
 
       carregarMateriais();
     } catch (error) {
-  alert('Erro ao atualizar estoque.');
-}
+      alert('Erro ao atualizar estoque.');
+    }
   };
+
+  const materiaisFiltrados = materiais.filter((item) =>
+    item.Nome.toLowerCase().includes(busca.toLowerCase())
+  );
 
   return (
     <View style={styles.container}>
@@ -140,16 +138,16 @@ const carregarMateriais = async () => {
       <Text style={styles.subtitulo}>Estoque Atual</Text>
 
       <TextInput
-  testID="input-busca"
-  style={styles.input}
-  placeholder="Pesquisar material"
-  value={busca}
-  onChangeText={setBusca}
-/>
+        testID="input-busca"
+        style={styles.input}
+        placeholder="Pesquisar material"
+        value={busca}
+        onChangeText={setBusca}
+      />
 
       <Text testID="total-itens">
-  Total de materiais: {materiaisFiltrados.length}
-</Text>
+        Total de materiais: {materiaisFiltrados.length}
+      </Text>
 
       {materiais.length === 0 && (
         <Text>Nenhum material cadastrado.</Text>
@@ -161,16 +159,16 @@ const carregarMateriais = async () => {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View
-  style={[
-    styles.item,
-    Number(item.Quantidade) < 10 && styles.estoqueCritico
-  ]}
-  accessibilityLabel={
-    Number(item.Quantidade) < 10
-      ? 'estoque-critico'
-      : undefined
-  }
->
+            style={[
+              styles.item,
+              Number(item.Quantidade) < 10 && styles.estoqueCritico
+            ]}
+            accessibilityLabel={
+              Number(item.Quantidade) < 10
+                ? 'estoque-critico'
+                : undefined
+            }
+          >
             <Text style={styles.nomeMaterial}>
               {item.Nome} - Estoque: {item.Quantidade} unidades
             </Text>
@@ -267,23 +265,23 @@ const styles = StyleSheet.create({
   },
 
   item: {
-  padding: 15,
-  borderWidth: 1,
-  borderColor: '#ddd',
-  backgroundColor: '#f5f5f5',
-  marginBottom: 15,
-  borderRadius: 8
-},
+    padding: 15,
+    borderWidth: 1,
+    borderColor: '#ddd',
+    backgroundColor: '#f5f5f5',
+    marginBottom: 15,
+    borderRadius: 8
+  },
 
-nomeMaterial: {
-  fontSize: 16,
-  fontWeight: 'bold',
-  marginBottom: 10
-},
+  nomeMaterial: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    marginBottom: 10
+  },
 
-estoqueCritico: {
-  backgroundColor: '#ffcccc',
-  borderColor: 'red',
-  borderWidth: 2
-}
+  estoqueCritico: {
+    backgroundColor: '#ffcccc',
+    borderColor: 'red',
+    borderWidth: 2
+  }
 });
