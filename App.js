@@ -26,6 +26,7 @@ export default function App() {
   const [quantidade, setQuantidade] = useState('');
   const [materiais, setMateriais] = useState([]);
   const [retirada, setRetirada] = useState({});
+  const [busca, setBusca] = useState('');
 
   useEffect(() => {
     carregarMateriais();
@@ -82,6 +83,10 @@ const carregarMateriais = async () => {
 
       if (!validarRetirada(estoqueAtual, quantidadeRetirada)) {
         alert('Não é possível retirar mais itens do que existem em estoque.');
+
+        const materiaisFiltrados = materiais.filter((item) =>
+  item.Nome.toLowerCase().includes(busca.toLowerCase())
+);
         return;
       }
 
