@@ -267,17 +267,23 @@ const styles = StyleSheet.create({
   },
 
   item: {
-    padding: 15,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#f5f5f5',
-    marginBottom: 15,
-    borderRadius: 8
-  },
+  padding: 15,
+  borderWidth: 1,
+  borderColor: '#ddd',
+  backgroundColor: '#f5f5f5',
+  marginBottom: 15,
+  borderRadius: 8
+},
 
-  nomeMaterial: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10
-  }
+nomeMaterial: {
+  fontSize: 16,
+  fontWeight: 'bold',
+  marginBottom: 10
+},
+
+estoqueCritico: {
+  backgroundColor: '#ffcccc',
+  borderColor: 'red',
+  borderWidth: 2
+}
 });
