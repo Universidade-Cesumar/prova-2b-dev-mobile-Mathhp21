@@ -160,7 +160,17 @@ const carregarMateriais = async () => {
         data={materiaisFiltrados}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <View style={styles.item}>
+          <View
+  style={[
+    styles.item,
+    Number(item.Quantidade) < 10 && styles.estoqueCritico
+  ]}
+  accessibilityLabel={
+    Number(item.Quantidade) < 10
+      ? 'estoque-critico'
+      : undefined
+  }
+>
             <Text style={styles.nomeMaterial}>
               {item.Nome} - Estoque: {item.Quantidade} unidades
             </Text>
