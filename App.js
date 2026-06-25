@@ -138,6 +138,14 @@ const carregarMateriais = async () => {
       </TouchableOpacity>
 
       <Text style={styles.subtitulo}>Estoque Atual</Text>
+      
+      <TextInput
+  testID="input-busca"
+  style={styles.input}
+  placeholder="Pesquisar material"
+  value={busca}
+  onChangeText={setBusca}
+/>
 
       <Text>Total de materiais: {materiais.length}</Text>
 
