@@ -5,7 +5,8 @@ import {
   View,
   TextInput,
   TouchableOpacity,
-  FlatList
+  FlatList,
+  Alert
 } from 'react-native';
 import axios from 'axios';
 
@@ -37,13 +38,19 @@ export default function App() {
       const response = await axios.get(API);
       setMateriais(response.data);
     } catch (error) {
-      alert('Erro de conexão. Não foi possível carregar os materiais.');
+      Alert.alert(
+        'Erro',
+        'Não foi possível carregar os materiais.'
+      );
     }
   };
 
   const cadastrarMaterial = async () => {
     if (nome.trim() === '' || quantidade.trim() === '') {
-      alert('Informe o nome e a quantidade do material');
+      Alert.alert(
+        'Atenção',
+        'Informe o nome e a quantidade do material.'
+      );
       return;
     }
 
@@ -58,7 +65,10 @@ export default function App() {
 
       carregarMateriais();
     } catch (error) {
-      alert('Erro ao cadastrar material.');
+      Alert.alert(
+        'Erro',
+        'Falha ao cadastrar material.'
+      );
     }
   };
 
@@ -70,7 +80,10 @@ export default function App() {
         listaAtual.filter((item) => item.id !== id)
       );
     } catch (error) {
-      alert('Erro ao excluir material.');
+      Alert.alert(
+        'Erro',
+        'Falha ao excluir material.'
+      );
     }
   };
 
@@ -80,7 +93,10 @@ export default function App() {
       const estoqueAtual = Number(item.Quantidade);
 
       if (!validarRetirada(estoqueAtual, quantidadeRetirada)) {
-        alert('Não é possível retirar mais itens do que existem em estoque.');
+        Alert.alert(
+          'Atenção',
+          'Não é possível retirar mais itens do que existem em estoque.'
+        );
         return;
       }
 
@@ -98,7 +114,10 @@ export default function App() {
 
       carregarMateriais();
     } catch (error) {
-      alert('Erro ao atualizar estoque.');
+      Alert.alert(
+        'Erro',
+        'Falha ao atualizar o estoque.'
+      );
     }
   };
 
@@ -108,12 +127,17 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Almoxarifado - Enfermagem</Text>
+      <View style={styles.header}>
+        <Text style={styles.title}>🏥 SysAlmox</Text>
+        <Text style={styles.subtitle}>
+          Controle de materiais hospitalares
+        </Text>
+      </View>
 
       <TextInput
         testID="input-nome"
         style={styles.input}
-        placeholder="Digite o nome do material"
+        placeholder="Nome do material"
         value={nome}
         onChangeText={setNome}
       />
@@ -121,7 +145,7 @@ export default function App() {
       <TextInput
         testID="input-quantidade"
         style={styles.input}
-        placeholder="Digite a quantidade"
+        placeholder="Quantidade"
         value={quantidade}
         onChangeText={setQuantidade}
         keyboardType="numeric"
@@ -132,36 +156,53 @@ export default function App() {
         style={styles.botao}
         onPress={cadastrarMaterial}
       >
-        <Text style={styles.textoBotao}>Cadastrar</Text>
+        <Text style={styles.textoBotao}>
+          Cadastrar Material
+        </Text>
       </TouchableOpacity>
 
-      <Text style={styles.subtitulo}>Estoque Atual</Text>
+      <View style={styles.dashboard}>
+        <Text
+          testID="total-itens"
+          style={styles.dashboardNumero}
+        >
+          {materiaisFiltrados.length}
+        </Text>
+
+        <Text style={styles.dashboardTexto}>
+          Materiais cadastrados
+        </Text>
+      </View>
+
+      <Text style={styles.subtitulo}>
+        Estoque Atual
+      </Text>
 
       <TextInput
         testID="input-busca"
         style={styles.input}
-        placeholder="Pesquisar material"
+        placeholder="🔍 Pesquisar material"
         value={busca}
         onChangeText={setBusca}
       />
 
-      <Text testID="total-itens">
-        Total de materiais: {materiaisFiltrados.length}
-      </Text>
-
       {materiais.length === 0 && (
-        <Text>Nenhum material cadastrado.</Text>
+        <Text style={styles.semDados}>
+          Nenhum material cadastrado.
+        </Text>
       )}
 
       <FlatList
         testID="lista-materiais"
         data={materiaisFiltrados}
         keyExtractor={(item) => item.id}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => (
           <View
             style={[
               styles.item,
-              Number(item.Quantidade) < 10 && styles.estoqueCritico
+              Number(item.Quantidade) < 10 &&
+                styles.estoqueCritico
             ]}
             accessibilityLabel={
               Number(item.Quantidade) < 10
@@ -170,13 +211,17 @@ export default function App() {
             }
           >
             <Text style={styles.nomeMaterial}>
-              {item.Nome} - Estoque: {item.Quantidade} unidades
+              {item.Nome}
+            </Text>
+
+            <Text style={styles.quantidadeTexto}>
+              Estoque: {item.Quantidade} unidades
             </Text>
 
             <TextInput
               testID="input-retirada"
               style={styles.input}
-              placeholder="Informe a quantidade para retirada"
+              placeholder="Quantidade para retirada"
               keyboardType="numeric"
               value={retirada[item.id] || ''}
               onChangeText={(texto) =>
@@ -203,7 +248,7 @@ export default function App() {
               onPress={() => excluirMaterial(item.id)}
             >
               <Text style={styles.textoBotao}>
-                Excluir
+                Excluir Material
               </Text>
             </TouchableOpacity>
           </View>
@@ -217,15 +262,44 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    marginTop: 40
+    paddingTop: 50,
+    backgroundColor: '#eef3f8'
+  },
+
+  header: {
+    alignItems: 'center',
+    marginBottom: 20
   },
 
   title: {
-    fontSize: 24,
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 20,
-    textAlign: 'center',
     color: '#007bff'
+  },
+
+  subtitle: {
+    fontSize: 14,
+    color: '#666',
+    marginTop: 4
+  },
+
+  dashboard: {
+    backgroundColor: '#007bff',
+    padding: 18,
+    borderRadius: 12,
+    alignItems: 'center',
+    marginVertical: 12
+  },
+
+  dashboardNumero: {
+    color: '#fff',
+    fontSize: 30,
+    fontWeight: 'bold'
+  },
+
+  dashboardTexto: {
+    color: '#fff',
+    fontSize: 14
   },
 
   subtitulo: {
@@ -236,16 +310,17 @@ const styles = StyleSheet.create({
 
   input: {
     borderWidth: 1,
-    borderColor: '#999',
+    borderColor: '#d0d7de',
+    backgroundColor: '#fff',
     padding: 12,
     marginBottom: 12,
-    borderRadius: 8
+    borderRadius: 10
   },
 
   botao: {
-    backgroundColor: '#28a745',
-    padding: 12,
-    borderRadius: 8,
+    backgroundColor: '#007bff',
+    padding: 14,
+    borderRadius: 10,
     marginBottom: 10
   },
 
@@ -260,28 +335,37 @@ const styles = StyleSheet.create({
   textoBotao: {
     color: '#fff',
     textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 16
+    fontWeight: 'bold'
   },
 
   item: {
+    backgroundColor: '#fff',
     padding: 15,
-    borderWidth: 1,
-    borderColor: '#ddd',
-    backgroundColor: '#f5f5f5',
+    borderRadius: 12,
     marginBottom: 15,
-    borderRadius: 8
-  },
-
-  nomeMaterial: {
-    fontSize: 16,
-    fontWeight: 'bold',
-    marginBottom: 10
+    elevation: 3
   },
 
   estoqueCritico: {
-    backgroundColor: '#ffcccc',
-    borderColor: 'red',
-    borderWidth: 2
+    backgroundColor: '#fff0f0',
+    borderLeftWidth: 6,
+    borderLeftColor: '#dc3545'
+  },
+
+  nomeMaterial: {
+    fontSize: 18,
+    fontWeight: 'bold'
+  },
+
+  quantidadeTexto: {
+    marginTop: 5,
+    marginBottom: 10,
+    color: '#555'
+  },
+
+  semDados: {
+    textAlign: 'center',
+    marginTop: 10,
+    color: '#666'
   }
 });
