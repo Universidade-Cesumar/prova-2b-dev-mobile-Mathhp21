@@ -39,8 +39,8 @@ const carregarMateriais = async () => {
       const response = await axios.get(API);
       setMateriais(response.data);
     } catch (error) {
-      console.log(error);
-    }
+  alert('Erro de conexão. Não foi possível carregar os materiais.');
+}
   };
 
   const cadastrarMaterial = async () => {
@@ -60,8 +60,8 @@ const carregarMateriais = async () => {
 
       carregarMateriais();
     } catch (error) {
-      console.log(error);
-    }
+  alert('Erro ao cadastrar material.');
+}
   };
 
   const excluirMaterial = async (id) => {
@@ -72,8 +72,8 @@ const carregarMateriais = async () => {
         listaAtual.filter((item) => item.id !== id)
       );
     } catch (error) {
-      console.log(error);
-    }
+  alert('Erro ao excluir material.');
+}
   };
 
   const baixarEstoque = async (item) => {
@@ -104,8 +104,8 @@ const carregarMateriais = async () => {
 
       carregarMateriais();
     } catch (error) {
-      console.log(error);
-    }
+  alert('Erro ao atualizar estoque.');
+}
   };
 
   return (
